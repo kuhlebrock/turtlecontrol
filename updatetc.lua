@@ -255,6 +255,11 @@ function handleCommand(cmd, args)
 		end
 		location.face(faceNr)
 	end
+  elseif cmd == "gotoX" then
+	if #args == 1 then
+		local x = tonumber(args[1])
+		movement.gotoX(x)
+	end
   end
 end
  
@@ -951,6 +956,24 @@ function turnRight(n)
 	end
 end
 
+
+-- ###### go to
+function gotoX(x)
+	local curPos = location.getPos()
+	local dif = x - curPos.x
+	
+	if dif >= 0 then -- face east
+		location.face(location.EAST)
+	else
+		location.face(location.WEST)
+	end
+	
+	local difabs = math.abs(dif)
+	for i=1,difabs do
+		movement.forceForward()
+	end
+	
+end
 
 -- ############## coordinate based walking ##############
 function gotoCoords(x,y,z)

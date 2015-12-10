@@ -108,6 +108,11 @@ function handleCommand(cmd, args)
 		end
 		location.face(faceNr)
 	end
+  elseif cmd == "gotoX" then
+	if #args == 1 then
+		local x = tonumber(args[1])
+		movement.gotoX(x)
+	end
   end
 end
  
