@@ -1,5 +1,5 @@
 function up()
-	turtle.up()
+	return turtle.up()
 end
 
 function safeUp()
@@ -16,7 +16,7 @@ function forceUp()
 end
 
 function down()
-	turtle.down()
+	return turtle.down()
 end
 
 function safeDown()
@@ -33,7 +33,7 @@ function forceDown()
 end
 
 function forward()
-	turtle.forward()
+	return turtle.forward()
 end
 
 function safeForward()
@@ -50,7 +50,7 @@ function forceForward()
 end
 
 function back()
-	turtle.back()
+	return turtle.back()
 end
 
 function safeBack()
