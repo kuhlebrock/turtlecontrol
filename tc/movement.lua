@@ -78,12 +78,6 @@ function turnRight(n)
 	end
 end
 
-function face(dir)
-	while location.getDirection() ~= dir do
-		movement.turnLeft()
-	end
-end
-
 
 -- ############## coordinate based walking ##############
 function gotoCoords(x,y,z)

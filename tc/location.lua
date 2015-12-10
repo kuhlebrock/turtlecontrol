@@ -169,3 +169,9 @@ end
 function isDirCalibrated()
 	return calDir
 end
+
+function face(dir)
+	while direction ~= dir do
+		movement.turnLeft()
+	end
+end

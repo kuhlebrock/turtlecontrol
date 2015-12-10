@@ -94,6 +94,20 @@ function handleCommand(cmd, args)
 	else
 		print("USAGE: placeTurtles <number of turtles> <distance between turtles>")
 	end
+  elseif cmd == "calibrate" then
+	location.calibrate(true)
+  elseif cmd == "calibratePos" then
+	location.calibrate()
+  elseif cmd == "forceCalibrate" then
+	location.calibrate(true,true)
+  elseif cmd == "face" then
+	if #args == 1 then
+		faceNr = tonumber(args[1])
+		if (not location.isPosCalibrated()) or (not location.isDirCalibrated()) then
+			location.calibrate(true,true)
+		end
+		location.face(faceNr)
+	end
   end
 end
  
