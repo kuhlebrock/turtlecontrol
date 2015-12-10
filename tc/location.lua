@@ -70,6 +70,7 @@ function calibrate(calcDirection, forceDir)
 			end
 			print("My direction is: " .. direction)
 			calDir = true
+			pos = new
 		end
 		
 		movement.safeBack()
@@ -159,4 +160,12 @@ end
 
 function getDirection()
 	return direction
+end
+
+function isPosCalibrated()
+	return calPos
+end
+
+function isDirCalibrated()
+	return calDir
 end

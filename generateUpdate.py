@@ -4,11 +4,12 @@ def wCreateDir(path):
 	path = path.replace(".\\", "")
 	path = path.replace("\\", "/")
 	print("Creating dir: " + path)
+	file.write("print(\"Creating dir: " + path + "\")")
 	file.write("fs.makeDir(\"" + path + "\")\n")
 
 
 
-file = open("update.lua", "w+")
+file = open("updatetc.lua", "w+")
 
 for dirname, dirnames, filenames in os.walk('.'):
 	filenames = [f for f in filenames if not f[0] == '.']
@@ -20,7 +21,7 @@ for dirname, dirnames, filenames in os.walk('.'):
 
     # print path to all filenames.
 	for filename in filenames:
-		if filename == "update.lua":
+		if filename == "updatetc.lua":
 			continue
 		if ".lua" not in filename:
 			continue
@@ -33,6 +34,7 @@ for dirname, dirnames, filenames in os.walk('.'):
 		path = path.replace("\\", "/")
 		
 		print("Adding file: " + path)
+		file.write("print(\"Creating file: " + path + "\")")
 		file.write("file = fs.open(\"" + path + "\", \"w\")\n")
 		file.write("text = " + text)
 		file.write("file.write(text)\n")
