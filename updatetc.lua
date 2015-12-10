@@ -2,7 +2,7 @@ print("Creating dir: tc")fs.makeDir("tc")
 print("Creating file: master")file = fs.open("master", "w")
 text = [[rednet.open("right")
 
-protocol = "TurtleControl0.9b"
+protocol = "TurtleControl0.9c"
 running = true
 function broadcast(msg)
 	rednet.broadcast(protocol .. " " .. msg)
@@ -144,7 +144,7 @@ file.close()
 print("Creating file: startup")file = fs.open("startup", "w")
 text = [[rednet.open("right")
  
-protocol = "TurtleControl0.9b"
+protocol = "TurtleControl0.9c"
 search = true
 print("Starting " .. protocol .. " (by Prinzer)")
 os.loadAPI("tc/turtlecontrol")
