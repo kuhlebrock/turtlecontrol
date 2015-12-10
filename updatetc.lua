@@ -238,6 +238,20 @@ function handleCommand(cmd, args)
 	else
 		print("USAGE: placeTurtles <number of turtles> <distance between turtles>")
 	end
+  elseif cmd == "calibrate" then
+	location.calibrate(true)
+  elseif cmd == "calibratePos" then
+	location.calibrate()
+  elseif cmd == "forceCalibrate" then
+	location.calibrate(true,true)
+  elseif cmd == "face" then
+	if #args == 1 then
+		faceNr = tonumber(args[1])
+		if (not location.isPosCalibrated()) or (not location.isDirCalibrated()) then
+			location.calibrate(true,true)
+		end
+		location.face(faceNr)
+	end
   end
 end
  
@@ -713,6 +727,12 @@ end
 
 function isDirCalibrated()
 	return calDir
+end
+
+function face(dir)
+	while direction ~= dir do
+		movement.turnLeft()
+	end
 end]]
 file.write(text)
 file.close()
@@ -919,12 +939,6 @@ function turnRight(n)
 	end
 	for i=1,n do
 		turtle.turnRight()
-	end
-end
-
-function face(dir)
-	while location.getDirection() ~= dir do
-		movement.turnLeft()
 	end
 end
 
