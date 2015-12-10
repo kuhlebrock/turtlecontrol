@@ -553,12 +553,13 @@ function calibrate(calcDirection, forceDir)
 	pos = vector.new(gps.locate(3, true))
 	if pos ~= nil then
 		calPos = true
+		print("I'm at " .. pos:tostring())
 	else
 		print("Could not get location.")
 	end
 
 	if calcDirection then
-		old = vector.new(x,y,z)
+		old = pos
 
 		moved = false
 		turned = 0
@@ -572,9 +573,13 @@ function calibrate(calcDirection, forceDir)
 			end
 		end
 
-		if (not moved) and forceDir then
-			miner.forceDig()
-			movement.forward()
+		if not moved then
+			if forceDir then
+				miner.forceDig()
+				movement.forward()
+			else
+				return
+			end
 		end
 
 		new = vector.new(gps.locate(3, true))
@@ -591,14 +596,15 @@ function calibrate(calcDirection, forceDir)
 				direction = EAST
 			else
 				print("Something went wrong.")
-				print("Moving vector: " .. dif.toString())
+				print("Moving vector: " .. dif:tostring())
 			end
+			print("My direction is: " .. direction)
+			calDir = true
 		end
-
+		
 		movement.safeBack()
 		movement.turnRight(turned)
 
-		calDir = true
 	end
 end
 
@@ -662,6 +668,14 @@ function turnedRight()
 	if calDir then
 		direction = (direction - 1) % 4
 	end
+end
+
+function getPos()
+	return pos
+end
+
+function getDirection()
+	return direction
 end]]
 file.write(text)
 file.close()
