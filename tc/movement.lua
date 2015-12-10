@@ -77,3 +77,19 @@ function turnRight(n)
 		turtle.turnRight()
 	end
 end
+
+function face(dir)
+	while location.getDirection() ~= dir do
+		movement.turnLeft()
+	end
+end
+
+
+-- ############## coordinate based walking ##############
+function gotoCoords(x,y,z)
+	local vDest = vector.new(x,y,z)
+	local vMove = vDest - location.getPos()
+	print("Moving to " .. vDest:tostring())
+	
+	
+end
