@@ -1,6 +1,6 @@
 rednet.open("right")
  
-protocol = "TurtleControl0.9b"
+protocol = "TurtleControl0.9c"
 search = true
 print("Starting " .. protocol .. " (by Prinzer)")
 os.loadAPI("tc/turtlecontrol")
