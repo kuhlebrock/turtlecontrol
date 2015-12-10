@@ -1,6 +1,6 @@
 rednet.open("right")
 
-protocol = "TurtleControl0.9c"
+protocol = "TurtleControl0.9d"
 running = true
 function broadcast(msg)
 	rednet.broadcast(protocol .. " " .. msg)

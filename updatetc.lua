@@ -1,8 +1,10 @@
-print("Creating dir: tc")fs.makeDir("tc")
-print("Creating file: master")file = fs.open("master", "w")
+print("Creating dir: tc")
+fs.makeDir("tc")
+print("Creating file: master")
+file = fs.open("master", "w")
 text = [[rednet.open("right")
 
-protocol = "TurtleControl0.9c"
+protocol = "TurtleControl0.9d"
 running = true
 function broadcast(msg)
 	rednet.broadcast(protocol .. " " .. msg)
@@ -141,10 +143,11 @@ while running do
 end]]
 file.write(text)
 file.close()
-print("Creating file: startup")file = fs.open("startup", "w")
+print("Creating file: startup")
+file = fs.open("startup", "w")
 text = [[rednet.open("right")
  
-protocol = "TurtleControl0.9c"
+protocol = "TurtleControl0.9d"
 search = true
 print("Starting " .. protocol .. " (by Prinzer)")
 os.loadAPI("tc/turtlecontrol")
@@ -305,7 +308,8 @@ else
 end]]
 file.write(text)
 file.close()
-print("Creating file: update")file = fs.open("update", "w")
+print("Creating file: update")
+file = fs.open("update", "w")
 text = [[ args = {...}
  
  branch = "master"
@@ -321,7 +325,8 @@ text = [[ args = {...}
  os.reboot()]]
 file.write(text)
 file.close()
-print("Creating file: tc/builder")file = fs.open("tc/builder", "w")
+print("Creating file: tc/builder")
+file = fs.open("tc/builder", "w")
 text = [[-- width, height, length
 
 function buildPlane(width, length)
@@ -418,7 +423,8 @@ function placeDownSafe()
 end]]
 file.write(text)
 file.close()
-print("Creating file: tc/inventory")file = fs.open("tc/inventory", "w")
+print("Creating file: tc/inventory")
+file = fs.open("tc/inventory", "w")
 text = [[selectedSlot = 1
 turtle.select(selectedSlot)
 
@@ -556,7 +562,8 @@ function inventoryToChest()
 end]]
 file.write(text)
 file.close()
-print("Creating file: tc/location")file = fs.open("tc/location", "w")
+print("Creating file: tc/location")
+file = fs.open("tc/location", "w")
 text = [[pos = nil
 calPos = false -- if gps coordinates are calibrated, or nil
 calDir = false -- if direction is calibrated
@@ -736,7 +743,8 @@ function face(dir)
 end]]
 file.write(text)
 file.close()
-print("Creating file: tc/miner")file = fs.open("tc/miner", "w")
+print("Creating file: tc/miner")
+file = fs.open("tc/miner", "w")
 text = [[-- make a cuboid 
 -- start is bottom left
 -- width:number, height:number, length:number, chest:bool
@@ -861,7 +869,8 @@ function forceDig()
 end]]
 file.write(text)
 file.close()
-print("Creating file: tc/movement")file = fs.open("tc/movement", "w")
+print("Creating file: tc/movement")
+file = fs.open("tc/movement", "w")
 text = [[function up()
 	return turtle.up()
 end
@@ -953,7 +962,8 @@ function gotoCoords(x,y,z)
 end]]
 file.write(text)
 file.close()
-print("Creating file: tc/turtlecontrol")file = fs.open("tc/turtlecontrol", "w")
+print("Creating file: tc/turtlecontrol")
+file = fs.open("tc/turtlecontrol", "w")
 text = [[print("Loading TurtleControl APIs...")
 os.loadAPI("tc/movement")
 os.loadAPI("tc/builder")
@@ -1020,7 +1030,8 @@ end
 print("Done")]]
 file.write(text)
 file.close()
-print("Creating file: tc/utils")file = fs.open("tc/utils", "w")
+print("Creating file: tc/utils")
+file = fs.open("tc/utils", "w")
 text = [[-- Chests in Slot 1
 -- Turtles in Slot 2
 -- TURTLE MUST BE IN SLOT 2 FOR COMPARISON!!!

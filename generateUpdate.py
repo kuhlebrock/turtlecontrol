@@ -4,7 +4,7 @@ def wCreateDir(path):
 	path = path.replace(".\\", "")
 	path = path.replace("\\", "/")
 	print("Creating dir: " + path)
-	file.write("print(\"Creating dir: " + path + "\")")
+	file.write("print(\"Creating dir: " + path + "\")\n")
 	file.write("fs.makeDir(\"" + path + "\")\n")
 
 
@@ -34,7 +34,7 @@ for dirname, dirnames, filenames in os.walk('.'):
 		path = path.replace("\\", "/")
 		
 		print("Adding file: " + path)
-		file.write("print(\"Creating file: " + path + "\")")
+		file.write("print(\"Creating file: " + path + "\")\n")
 		file.write("file = fs.open(\"" + path + "\", \"w\")\n")
 		file.write("text = " + text)
 		file.write("file.write(text)\n")
