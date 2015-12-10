@@ -2,7 +2,7 @@ fs.makeDir("tc")
 file = fs.open("master", "w")
 text = [[rednet.open("right")
 
-protocol = "TurtleControl0.9"
+protocol = "TurtleControl0.9b"
 running = true
 function broadcast(msg)
 	rednet.broadcast(protocol .. " " .. msg)
@@ -144,7 +144,7 @@ file.close()
 file = fs.open("startup", "w")
 text = [[rednet.open("right")
  
-protocol = "TurtleControl0.9"
+protocol = "TurtleControl0.9b"
 search = true
 print("Starting " .. protocol .. " (by Prinzer)")
 os.loadAPI("tc/turtlecontrol")
@@ -531,12 +531,11 @@ text = [[pos = nil
 calPos = false -- if gps coordinates are calibrated, or nil
 calDir = false -- if direction is calibrated
 
--- 0 North (-Z), 1 West (-X), 2 South (+Z), 3 East (+X) # TODO: confirm
 direction = nil
 
-NORTH = 0
+SOUTH = 0
 WEST = 1
-SOUTH = 2
+NORTH = 2
 EAST = 3
 
 -- ARGS: 
@@ -608,6 +607,19 @@ function calibrate(calcDirection, forceDir)
 	end
 end
 
+function validatePosition(checkDirection, forceCheck)
+	oldPos = pos
+	oldDir = direction
+	calibrate(checkDirection, forceCheck)
+	
+	if (oldPos ~= pos) then
+		print("Different Positions! Old: " .. oldPos:tostring() .. " | New: " .. pos:tostring())
+	end
+	if oldDir ~= direction then
+		print("Different Direction! Old: " .. oldDir .. " | New: " .. direction)
+	end
+end
+
 function setPosition(nx, ny, nz)
 	pos.x = nx
 	pos.y = ny
@@ -660,13 +672,13 @@ end
 
 function turnedLeft()
 	if calDir then
-		direction = (direction + 1) % 4
+		direction = (direction - 1) % 4
 	end
 end
 
 function turnedRight()
 	if calDir then
-		direction = (direction - 1) % 4
+		direction = (direction + 1) % 4
 	end
 end
 
@@ -806,12 +818,7 @@ file.write(text)
 file.close()
 file = fs.open("tc/movement", "w")
 text = [[function up()
-	if turtle.up() then
-		location.movedUp()
-		return true
-	else
-		return false
-	end
+	turtle.up()
 end
 
 function safeUp()
@@ -819,23 +826,16 @@ function safeUp()
 		print("Can not go up. Trying again...")
 		sleep(1)
 	end
-	location.movedUp()
 end
 
 function forceUp()
 	while not turtle.up() do
 		turtle.digUp()
 	end
-	location.movedUp()
 end
 
 function down()
-	if turtle.down() then
-		location.movedDown()
-		return true
-	else
-		return false
-	end
+	turtle.down()
 end
 
 function safeDown()
@@ -843,23 +843,16 @@ function safeDown()
 		print("Can not go down. Trying again...")
 		sleep(1)
 	end
-	location.movedDown()
 end
 
 function forceDown()
 	while not turtle.down() do
 		turtle.digDown()
 	end
-	location.movedDown()
 end
 
 function forward()
-	if turtle.forward() then
-		location.movedForward()
-		return true
-	else
-		return false
-	end
+	turtle.forward()
 end
 
 function safeForward()
@@ -867,23 +860,16 @@ function safeForward()
 		print("Can not go forward. Trying again...")
 		sleep(1)
 	end
-	location.movedForward()
 end
 
 function forceForward()
 	while not turtle.forward() do
 		turtle.dig()
 	end
-	location.movedForward()
 end
 
 function back()
-	if turtle.back() then
-		location.movedBack()
-		return true
-	else
-		return false
-	end
+	turtle.back()
 end
 
 function safeBack()
@@ -891,7 +877,6 @@ function safeBack()
 		print("Can not go back. Trying again...")
 		sleep(1)
 	end
-	location.movedBack()
 end
 
 function turnLeft(n)
@@ -900,7 +885,6 @@ function turnLeft(n)
 	end
 	for i=1,n do
 		turtle.turnLeft()
-		location.turnedLeft()
 	end
 end
 
@@ -910,7 +894,6 @@ function turnRight(n)
 	end
 	for i=1,n do
 		turtle.turnRight()
-		location.turnedRight()
 	end
 end]]
 file.write(text)
@@ -923,7 +906,63 @@ os.loadAPI("tc/miner")
 os.loadAPI("tc/inventory")
 os.loadAPI("tc/utils")
 os.loadAPI("tc/location")
-print("All APIs loaded.")]]
+print("All APIs loaded.")
+
+-- ### Overwriting functions ###
+print("Overwriting native functions...")
+nativeForward = turtle.forward
+turtle.forward = function()
+	if nativeForward() then
+		location.movedForward()
+		return true
+	else
+		return false
+	end
+end
+
+nativeBack = turtle.back
+turtle.back = function()
+	if nativeBack() then
+		location.movedBack()
+		return true
+	else
+		return false
+	end
+end
+
+nativeUp = turtle.up
+turtle.up = function()
+	if nativeUp() then
+		location.movedUp()
+		return true
+	else
+		return false
+	end
+end
+
+nativeDown = turtle.down
+turtle.down = function()
+	if nativeDown() then
+		location.movedDown()
+		return true
+	else
+		return false
+	end
+end
+
+nativeTurnLeft = turtle.turnLeft
+turtle.turnLeft = function()
+	nativeTurnLeft()
+	location.turnedLeft()
+end
+
+nativeTurnRight = turtle.turnRight
+turtle.turnRight = function()
+	nativeTurnRight()
+	location.turnedRight()
+end
+
+print("Done")]]
 file.write(text)
 file.close()
 file = fs.open("tc/utils", "w")

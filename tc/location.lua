@@ -2,12 +2,11 @@ pos = nil
 calPos = false -- if gps coordinates are calibrated, or nil
 calDir = false -- if direction is calibrated
 
--- 0 North (-Z), 1 West (-X), 2 South (+Z), 3 East (+X) # TODO: confirm
 direction = nil
 
-NORTH = 0
+SOUTH = 0
 WEST = 1
-SOUTH = 2
+NORTH = 2
 EAST = 3
 
 -- ARGS: 
@@ -79,6 +78,19 @@ function calibrate(calcDirection, forceDir)
 	end
 end
 
+function validatePosition(checkDirection, forceCheck)
+	oldPos = pos
+	oldDir = direction
+	calibrate(checkDirection, forceCheck)
+	
+	if (oldPos ~= pos) then
+		print("Different Positions! Old: " .. oldPos:tostring() .. " | New: " .. pos:tostring())
+	end
+	if oldDir ~= direction then
+		print("Different Direction! Old: " .. oldDir .. " | New: " .. direction)
+	end
+end
+
 function setPosition(nx, ny, nz)
 	pos.x = nx
 	pos.y = ny
@@ -131,13 +143,13 @@ end
 
 function turnedLeft()
 	if calDir then
-		direction = (direction + 1) % 4
+		direction = (direction - 1) % 4
 	end
 end
 
 function turnedRight()
 	if calDir then
-		direction = (direction - 1) % 4
+		direction = (direction + 1) % 4
 	end
 end
 
