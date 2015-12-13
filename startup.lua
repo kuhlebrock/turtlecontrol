@@ -1,6 +1,13 @@
-rednet.open("right")
+modemside = "right"
+
+wireless = false
+if peripheral.isPresent(modemside) and (peripheral.getType(modemside) == "modem") then
+	rednet.open(modemside)
+	wireless = true
+	print("Wireless active.")
+end
  
-protocol = "TurtleControl0.9d"
+protocol = "TurtleControl0.9e"
 search = true
 print("Starting " .. protocol .. " (by Prinzer)")
 os.loadAPI("tc/turtlecontrol")
@@ -113,6 +120,8 @@ function handleCommand(cmd, args)
 		local x = tonumber(args[1])
 		movement.gotoX(x)
 	end
+  elseif cmd == "keepPlacing" then
+	utils.keepPlacing()
   end
 end
  
@@ -153,7 +162,10 @@ args = {...}
 turnOnAll()
 threads = {}
 if #args == 0 then
-	newThread(rednetReceive)
+	if wireless then
+		newThread(rednetReceive)
+	end
+	
 	while true do
 		tEvents = {os.pullEvent()}
 		for i=1, #threads do

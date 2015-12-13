@@ -42,3 +42,13 @@ function placeTurtles(turtles, distance)
 		end
 	end
 end
+
+function keepPlacing()
+	while true do
+		inventory.selectNextFullSlot()
+		if inventory.getItemCount() == 0 then
+			sleep(1)
+		end
+		turtle.place()
+	end
+end
