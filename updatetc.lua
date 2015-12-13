@@ -4,7 +4,7 @@ print("Creating file: master")
 file = fs.open("master", "w")
 text = [[rednet.open("right")
 
-protocol = "TurtleControl0.9d"
+protocol = "TurtleControl0.9e"
 running = true
 function broadcast(msg)
 	rednet.broadcast(protocol .. " " .. msg)
@@ -145,9 +145,16 @@ file.write(text)
 file.close()
 print("Creating file: startup")
 file = fs.open("startup", "w")
-text = [[rednet.open("right")
+text = [[modemside = "right"
+
+wireless = false
+if peripheral.isPresent(modemside) and (peripheral.getType(modemside) == "modem") then
+	rednet.open(modemside)
+	wireless = true
+	print("Wireless active.")
+end
  
-protocol = "TurtleControl0.9d"
+protocol = "TurtleControl0.9e"
 search = true
 print("Starting " .. protocol .. " (by Prinzer)")
 os.loadAPI("tc/turtlecontrol")
@@ -260,6 +267,8 @@ function handleCommand(cmd, args)
 		local x = tonumber(args[1])
 		movement.gotoX(x)
 	end
+  elseif cmd == "keepPlacing" then
+	utils.keepPlacing()
   end
 end
  
@@ -300,7 +309,10 @@ args = {...}
 turnOnAll()
 threads = {}
 if #args == 0 then
-	newThread(rednetReceive)
+	if wireless then
+		newThread(rednetReceive)
+	end
+	
 	while true do
 		tEvents = {os.pullEvent()}
 		for i=1, #threads do
@@ -1097,6 +1109,16 @@ function placeTurtles(turtles, distance)
 			print("No more turtles. Ending...")
 			break
 		end
+	end
+end
+
+function keepPlacing()
+	while true do
+		inventory.selectNextFullSlot()
+		if inventory.getItemCount() == 0 then
+			sleep(1)
+		end
+		turtle.place()
 	end
 end]]
 file.write(text)
